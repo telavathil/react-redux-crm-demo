@@ -1,28 +1,33 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import NewTodo from './NewTodo'
-import { addTodo, deleteTodo } from '../actions'
+import NewLead from './NewLead'
+import { addLead, deleteTodo } from '../actions'
 
-const Todos = ({todos, dispatch}) => (
+const Leads = ({leads, dispatch}) => (
   <div>
-    <h1>Todos</h1>
-    <NewTodo onChange={e => {
-      if(e.keyCode == 13){
-        dispatch(addTodo(e.target.value))
-        e.target.value = ''
-      }
+    <h1>Leads</h1>
+    <NewLead onSubmit={e => {
+      e.preventDefault();
+      //store form data in temp variables
+      var name = e.target.children[0].value
+      var phone = e.target.children[1].value
+
+      //clear form
+      e.target.children[0].value = ''
+      e.target.children[1].value = ''
+      dispatch(addLead([name,phone]))
     }}/>
-    {todos.map((todo, index) => <p key={index}>{todo} <button onClick={e => {
+    {leads.map((todo, index) => <p key={index}>{todo} <button onClick={e => {
       dispatch(deleteTodo(index))
     }}>X</button></p>)}
   </div>
 )
 
-function mapStateToProps(todos) {
+function mapStateToProps(leads) {
   return {
-    todos
+    leads
   }
 }
 
-export default connect(mapStateToProps)(Todos)
+export default connect(mapStateToProps)(Leads)
